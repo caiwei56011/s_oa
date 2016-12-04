@@ -1,7 +1,0 @@
-package com.jsoft.oa.admin.identity.action;
-
-public class ModuleAction extends IdentityAction {
-
-	private static final long serialVersionUID = 1L;
-
-}
