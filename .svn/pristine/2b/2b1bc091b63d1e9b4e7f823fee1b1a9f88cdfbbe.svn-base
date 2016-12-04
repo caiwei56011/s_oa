@@ -1,0 +1,16 @@
+package com.jsoft.oa.admin;
+
+/**
+ * amdin子系统的常量类
+ * @author Administrator
+ * @date 2016年8月19日 下午8:56:27 
+ * @version V1.0
+ */
+public class AdminConstant {
+	/** 定义session中SESSION_USER常量*/
+	public final static  String SESSION_USER = "session_user";
+	/** 定义cookie中COOKIE_NAME常量 */
+	public final static String COOKIE_NAME = "oa_user_id";
+	/** 定义cookie的最大存活时间常量(7天，按秒计算) */
+	public final static int COOKIE_MAX_AGE = 7 * 24 * 60 * 60;
+}

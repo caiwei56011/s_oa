@@ -1,0 +1,60 @@
+package com.jsoft.oa.admin.identity.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.jsoft.oa.admin.identity.entity.User;
+import com.jsoft.oa.core.common.web.PageModel;
+
+/**
+ * 权限管理业务处理接口
+ * @author Administrator
+ * @date 2016年8月16日 下午8:59:28 
+ * @version V1.0
+ */
+public interface IdentityService {
+
+	/**
+	 * 登陆方法
+	 * @param userId 用户名
+	 * @param password 密码
+	 * @param vcode 验证码
+	 * @param key 是否记住用户，1表示记住
+	 * @return Map集合
+	 */
+	Map<String, Object> login(String userId, String password, String vcode,
+			int key);
+
+	/**
+	 * 根据userId获取用户
+	 * @param userId 用户id
+	 * @param isMD5 用户id是否进行了md5加密
+	 * @return 用户
+	 * @throws Exception 
+	 */
+	User getUser(String userId, boolean isMD5);
+
+	/**
+	 * 多条件分页查询用户
+	 * @param user 用户查询条件
+	 * @param pageModel  分页参数
+	 * @return 用户集合
+	 */
+	List<User> getUserByPage(User user, PageModel pageModel);
+
+	/**
+	 * 加载部门
+	 * @return list集合 
+	 */
+	List<Map<String, Object>> loadDept();
+
+	/**
+	 * 加载联想(模糊查询)的用户name
+	 * @param userName
+	 * @return list集合
+	 */
+	List<String> loadUserName(String userName);
+
+
+	
+}

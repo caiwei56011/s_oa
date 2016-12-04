@@ -1,0 +1,15 @@
+@charset "utf-8";
+/* CSS Document 
+   设计者：陈河龙 (A.designer)408739876
+   编辑者：陈河龙
+   本样式属全局必须每个页面都需要加载此样式文件
+*/
+@import url(layout.css);
+html,body{ margin:0px; padding:0px; font-size:12px; color:#6a6f71; font-family:Arial,"宋体";}
+img{border:0;}
+
+/*左边菜单栏*/
+.leftmenubody{ background:#f0fbfd url(../../images/system/leftmenubody_bg.gif) repeat-y top right;}
+
+/*操作内容区*/
+.conterbody{ background:#f9fdfe url(../../images/system/conterbody_bg.gif) repeat-x scroll 0 0;}

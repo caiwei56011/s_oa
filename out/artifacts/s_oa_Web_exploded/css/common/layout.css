@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* CSS Document 
+   设计者：陈河龙 (A.designer)408739876
+   编辑者：陈河龙   
+*/
+/*头部*/
+.headbody{ background:url(../../images/system/headbottom_bg.gif) repeat-x scroll 0 0}
+.headbody .headtop{ height:31px; clear:both;}
+.headbody .headtopout{ display:block; width:89px; height:31px; font-size:14px; font-weight:bold; line-height:31px; background:url(../../images/system/top_out.gif) no-repeat scroll 0 0; text-align:center; float:right; color:#fff; text-decoration:none;}
+.headbody .headtopout:hover{background:url(../../images/system/top_out2.gif) no-repeat scroll 0 0;}
+.headbody .titlexx{ float:right; color:#fff; font-size:12px; margin-right:10px; line-height:31px;}
+.headtitle{ height:65px; width:100%; clear:both; margin-top:1px; background:url(../../images/system/headimg.gif) no-repeat top right;}
+.headtitle .headlogo{ width:326px; height:65px; float:left; background:url(../../images/system/logo.gif) no-repeat scroll 0 0;}
+.headtitle .headmenutop{ float:right; padding-right:30px; margin-top:21px; height:37px;}
+.yctopdiv{ height:10px; width:100%; clear:both;}
+.yctopdiv .t_link{margin-right:10px; float:right;}
+/*左边菜单*/
+.topdivyc{ height:28px; background:url(../../images/system/leftycbg.gif) repeat-x; clear:both; margin-right:4px; width:auto;}
+.topdivyc .a_link{ margin:6px 0 0 0; float:left;}
+.bodytextmenu{margin:0; padding:0; width:auto; margin-right:4px; height:100%; min-height:200px; background:url(../../images/system/shumenubg.gif) repeat-x scroll 0 0;}
+.shumenu{ overflow:auto; width:auto; height:93.5%; margin:0; padding:10px 0 0 10px; scrollbar-shadow-color: #7fb2d1; scrollbar-highlight-color: #7fb2d1; scrollbar-arrow-color: #7fb2d1; scrollbar-face-color: #fff; scrollbar-track-color: #fff; scrollbar-3dlight-color: #fff; scrollbar-darkshadow-color: #fff; /*white-space:nowrap;*/}

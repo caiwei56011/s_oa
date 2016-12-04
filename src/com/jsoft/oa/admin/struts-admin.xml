@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+	<package name="admin" namespace="/admin" extends="oa">
+		
+		<interceptors>
+			<!-- 配置登录拦截器 -->
+			<interceptor name="loginInterceptor" class="com.jsoft.oa.admin.interceptor.LoginInterceptor" />
+			<!-- 配置登录拦截器栈，引用login拦截器和默认拦截器 -->
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="loginInterceptor" />
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+			<!-- 配置权限拦截器 -->
+			<interceptor name="popedomIntercepter" class="com.jsoft.oa.admin.interceptor.PopedomIntercepter"/>
+			<!-- 配置权限拦截器栈，引用login拦截器栈和权限拦截器 -->
+			<interceptor-stack name="popedomStack">
+				<interceptor-ref name="loginStack"/>
+				<interceptor-ref name="popedomIntercepter"/>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 全局默认引用权限拦截器栈 -->
+	  	<default-interceptor-ref name="popedomStack"></default-interceptor-ref>
+        
+        <!-- Admin子系统的全局action配置,为匹配到actionName的请求,进入此action, 默认处理类为ActionSupport -->
+        <action name="*">
+        	<interceptor-ref name="loginStack"></interceptor-ref>
+        	<result>/WEB-INF/jsp/admin/{1}.jsp</result>
+        </action>
+        
+        <!-- 异步请求登录 -->
+        <action name="loginAjax" class="com.jsoft.oa.admin.LoginAjax">
+        	<!-- 登录页面不需要进行权限和登录拦截，否则无法使用登录页面 -->
+        	<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<!-- 结果视图返回json格式数据 -->
+        	<result type="json">
+        		<param name="root">responseData</param>
+        	</result>
+        </action>
+        <!-- 异步加载当前用户对应的菜单树 -->
+        <action name="loadMenuTreeAjax" class="com.jsoft.oa.admin.LoadMenuTreeAjax">
+        	<interceptor-ref name="loginStack"></interceptor-ref>
+        	<result type="json">
+        		<param name="root">responseData</param>
+        		<param name="enableGZIP">true</param>
+        	</result>
+        </action>
+        <!-- 安全退出系统 -->
+        <action name="logout" class="com.jsoft.oa.admin.LogoutAction">
+        	<interceptor-ref name="loginStack"></interceptor-ref>
+        </action>
+        <!-- 显示找回密码页面 -->
+        <action name="showFindPwd">
+        	<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<result>/WEB-INF/jsp/admin/findPwd.jsp</result>
+        </action>
+        <!-- 找回密码 -->
+        <action name="findPwd" class="com.jsoft.oa.admin.FindPwdAction">
+        	<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<result>/WEB-INF/jsp/admin/findPwd.jsp</result>	
+        </action>
+        <!-- 显示修改密码页面 -->
+        <action name="showUpdatePwd">
+        	<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<result>/WEB-INF/jsp/admin/updatePwd.jsp</result>
+        </action>
+        <!-- 修改密码 -->
+        <action name="updatePwd" class="com.jsoft.oa.admin.UpdatePwdAction">
+        	<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<interceptor-ref name="token"></interceptor-ref>
+        	<result type="redirectAction">logout</result>
+        	<result name="invaild.token">/WEB-INF/jsp/admin/updatePwd.jsp</result>
+        	<result name="input">/WEB-INF/jsp/admin/updatePwd.jsp</result>	
+        </action>
+        <!-- 修改登录用户的信息 -->
+        <action name="updateSelf" class="com.jsoft.oa.admin.identity.action.UserAction" 
+        	method="updateUser">
+        	<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<interceptor-ref name="token"></interceptor-ref>
+        	<result>/WEB-INF/jsp/admin/self.jsp</result>
+        	<result name="invaild.token">/WEB-INF/jsp/admin/self.jsp</result>
+        	<result name="input">/WEB-INF/jsp/admin/self.jsp</result>	
+        </action>
+	</package>
+	
+	<!-- 引入子模块级别的struts文件 -->
+	<include file="com/jsoft/oa/admin/addressbook/struts-admin-addressbook.xml"></include>
+	<include file="com/jsoft/oa/admin/leave/struts-admin-leave.xml"></include>
+	<include file="com/jsoft/oa/admin/identity/struts-admin-identity.xml"></include>
+	<include file="com/jsoft/oa/admin/workflow/struts-admin-workflow.xml"></include>
+</struts>

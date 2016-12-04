@@ -1,0 +1,12 @@
+package com.jsoft.oa.admin.identity.dao;
+
+import com.jsoft.oa.core.dao.HibernateDao;
+/**
+ * 权限表的访问接口
+ * @author Administrator
+ * @date 2016年8月16日 下午8:32:55 
+ * @version V1.0
+ */
+public interface PopedomDao extends HibernateDao{
+	
+}

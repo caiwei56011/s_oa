@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+	<package name="admin-identity" namespace="/admin/identity" extends="admin">
+		<!-- 多条件分页查询用户，显示用户列表 -->
+	 	<action name="selectUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="selectUser">
+	 		<result>/WEB-INF/jsp/admin/identity/user.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 异步请求加载部门id和name -->
+	 	<action name="loadDeptByIdAndName" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadDeptByIdAndName">
+	 		<result type="json">
+	 			<param name="root">responseDeptData</param>
+	 		</result>
+	 	</action>
+	 	<!-- 异步请求加载联想(模糊查询)的用户name -->
+	 	<action name="loadUserName" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadUserName">
+	 		<result type="json">
+	 			<param name="root">responseUserNameData</param>
+	 		</result>
+	 	</action>
+	 	
+	</package>
+	
+
+</struts>

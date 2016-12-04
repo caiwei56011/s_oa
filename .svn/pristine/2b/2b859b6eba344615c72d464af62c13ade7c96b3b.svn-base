@@ -1,0 +1,18 @@
+package com.jsoft.oa.admin.identity.action;
+
+
+public class DeptAction extends IdentityAction{
+
+	private static final long serialVersionUID = 6821912002003171121L;
+
+	
+	/*测试事务控制
+	public String execute() throws Exception
+	{
+		identityService.run();
+		//identityService.getDept();
+		System.out.println(identityService);
+		return SUCCESS;
+	}
+	*/
+}

@@ -1,0 +1,134 @@
+package com.jsoft.oa.admin.identity.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.jsoft.oa.admin.identity.entity.Role;
+import com.jsoft.oa.admin.identity.entity.User;
+import com.jsoft.oa.core.common.web.PageModel;
+
+/**
+ * 权限管理业务处理接口
+ * @author Administrator
+ * @date 2016年8月16日 下午8:59:28 
+ * @version V1.0
+ */
+public interface IdentityService {
+	
+	/** TODO ##################用户管理业务处理 ###############*/ 
+
+	/**
+	 * 登陆方法
+	 * @param userId 用户名
+	 * @param password 密码
+	 * @param vcode 验证码
+	 * @param key 是否记住用户，1表示记住
+	 * @return Map集合
+	 */
+	Map<String, Object> login(String userId, String password, String vcode,
+			int key);
+
+	/**
+	 * 根据userId获取用户
+	 * @param userId 用户id
+	 * @param isMD5 用户id是否进行了md5加密
+	 * @return 用户
+	 * @throws Exception 
+	 */
+	User getUser(String userId, boolean isMD5);
+
+	/**
+	 * 多条件分页查询用户
+	 * @param user 用户查询条件
+	 * @param pageModel  分页参数
+	 * @return 用户集合
+	 */
+	List<User> getUserByPage(User user, PageModel pageModel);
+
+	/**
+	 * 加载部门
+	 * @return list集合 
+	 */
+	List<Map<String, Object>> loadDept();
+
+	/**
+	 * 加载联想(模糊查询)的用户name
+	 * @param userName
+	 * @return list集合
+	 */
+	List<String> loadUserName(String userName);
+	
+	/**
+	 * 加载部门和职位数据
+	 * @return map集合
+	 */
+	Map<String, List<Map<String, Object>>> loadDeptAndJob();
+
+	/**
+	 * 添加用户
+	 * @param user 用户实体
+	 */
+	void addUser(User user);
+
+	/**
+	 * 获取用户登录名(用于检查是否已存在)
+	 * @param userId 表单中填写的登录名
+	 * @return
+	 */
+	String loadUserId(String userId);
+	
+	/**
+	 * 修改用户
+	 * @param user 用户实体
+	 */
+	void updateUser(User user);
+
+	/**
+	 * 删除用户
+	 * @param userIds 用户的登录名
+	 */
+	void deleteUser(String[] userIds);
+
+	/**
+	 * 审核用户
+	 * @param userIds 用户的登录名
+	 * @param status 用户状态
+	 */
+	void checkUser(String[] userIds, Short status);
+
+	/** TODO ##################角色管理业务处理 ###############*/ 
+	/**
+	 * 分页查询角色列表
+	 * @param pageModel 分页实体
+	 * @return
+	 */
+	List<Role> getRoleByPage(PageModel pageModel);
+	
+	/**
+	 * 添加角色
+	 * @param role 角色实体
+	 */
+	void addRole(Role role);
+
+	/**
+	 * 根据主键查询角色
+	 * @param id 主键
+	 * @return 角色对象
+	 */
+	Role getRole(Long id);
+	
+	/**
+	 * 修改角色
+	 * @param role
+	 */
+	void updateRole(Role role);
+
+	/**
+	 * 删除角色
+	 * @param split
+	 */
+	void deleteRole(String[] roleIds);
+
+
+	
+}

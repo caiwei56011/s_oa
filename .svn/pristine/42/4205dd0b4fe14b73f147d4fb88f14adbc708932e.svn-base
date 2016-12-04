@@ -1,0 +1,97 @@
+package com.jsoft.oa.admin.identity.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.jsoft.oa.admin.identity.dao.UserDao;
+import com.jsoft.oa.admin.identity.entity.User;
+import com.jsoft.oa.core.common.web.PageModel;
+import com.jsoft.oa.core.dao.impl.HibernateDaoImpl;
+
+/**
+ * 用户表的访问接口实现类
+ * @author Administrator
+ * @date 2016年8月16日 下午8:32:55 
+ * @version V1.0
+ */
+@SuppressWarnings("unchecked")
+public class UserDaoImpl extends HibernateDaoImpl implements UserDao{
+
+	/**
+	 * 根据md5加密后的用户id获取用户
+	 * @param userId md5加密后的userId
+	 * @return 用户
+	 */
+	@Override
+	public User getUser(String userId) {
+		String hql = "select u from User u where MD5(userId) =?";
+		return this.findUniqueEntity(hql, userId);
+	}
+
+	/**
+	 * 多条件分页查询用户
+	 * @param user 用户查询条件
+	 * @param pageModel  分页参数
+	 * @return 用户集合
+	 */
+	@Override
+	public List<User> getUserByPage(User user, PageModel pageModel) {
+		/** 定义StringBuilder拼接hql语句 */
+		StringBuilder hql = new StringBuilder();
+		/** 定义list集合保存查询条件参数 */
+		List<Object> params = new ArrayList<Object>();
+		hql.append("select u from User u where 1=1 ");
+		if(user != null)
+		{
+			/** 姓名 */
+			if(!StringUtils.isEmpty(user.getName()))
+			{
+				hql.append(" and name like ?");
+				params.add("%" + user.getName() + "%");
+			}
+			/** 手机号 */
+			if(!StringUtils.isEmpty(user.getPhone()))
+			{
+				hql.append(" and phone like ?");
+				params.add("%" + user.getPhone() + "%");
+			}
+			/** 部门id */
+			if(user.getDept() != null && user.getDept().getId() != null && user.getDept().getId() > 0)
+			{
+				hql.append(" and dept_id=?");
+				params.add(user.getDept().getId());
+			}
+		}
+		/** 按创建时间升序排序*/
+		hql.append(" order by create_date asc");
+		
+		return this.findByPage(hql.toString(), pageModel,params);
+	}
+
+	
+	/**
+	 * 获取联想(模糊查询)的用户name
+	 * @param userName
+	 * @return list集合
+	 */
+	@Override
+	public List<String> getUserName(String userName) {
+		String hql = "select u.name from User u where u.name like ?";
+		return (List<String>) this.find(hql, new Object[]{"%" + userName + "%"});
+	}
+
+	/**
+	 * 获取用户登录名
+	 * @param userId 表单中填写的登录名
+	 * @return
+	 */
+	@Override
+	public String getUserId(String userId) {
+		String hql = "select userId from User where userId = ?";
+		return this.findUniqueEntity(hql, userId);
+	}
+	
+}

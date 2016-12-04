@@ -1,0 +1,12 @@
+package com.jsoft.oa.admin.leave.dao;
+
+import com.jsoft.oa.core.dao.HibernateDao;
+/**
+ * 假期审核说明的访问接口
+ * @author Administrator
+ * @date 2016年8月16日 下午7:33:08 
+ * @version V1.0
+ */
+public interface LeaveAuditDao extends HibernateDao{
+	
+}

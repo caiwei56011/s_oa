@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+	<package name="admin-addressbook" namespace="/admin/addressbook" extends="admin">
+	  	<!-- ##################### 联系组管理begin ######################## -->
+	  	
+	  	<!-- 分页查询联系组 -->
+	  	<action name="selectContactGroup" class="com.jsoft.oa.admin.addressbook.action.ContactGroupAction" method="selectContactGroup">
+	  		<result>/WEB-INF/jsp/admin/addressbook/contactGroup.jsp</result>
+	  	</action>
+	  	<!-- 显示添加联系组页面 -->
+	  	<action name="showAddContactGroup">
+	  		<result>/WEB-INF/jsp/admin/addressbook/addContactGroup.jsp</result>
+	  	</action>
+	  	<!-- 添加联系组 -->
+	  	<action name="addContactGroup" class="com.jsoft.oa.admin.addressbook.action.ContactGroupAction" method="addContactGroup">
+	  		<result>/WEB-INF/jsp/admin/addressbook/addContactGroup.jsp</result>
+	  		<result name="invalid.token">/WEB-INF/jsp/admin/addressbook/addContactGroup.jsp</result>
+	  	</action>
+	  	<!-- 显示修改联系组页面 -->
+	  	<action name="showUpdateContactGroup" class="com.jsoft.oa.admin.addressbook.action.ContactGroupAction" method="showUpdateContactGroup">
+	  		<result>/WEB-INF/jsp/admin/addressbook/updateContactGroup.jsp</result>
+	  	</action>
+	  	<!-- 修改联系组 -->
+	  	<action name="updateContactGroup" class="com.jsoft.oa.admin.addressbook.action.ContactGroupAction" method="updateContactGroup">
+	  		<result>/WEB-INF/jsp/admin/addressbook/updateContactGroup.jsp</result>
+	  		<result name="invalid.token">/WEB-INF/jsp/admin/addressbook/updateContactGroup.jsp</result>
+	  	</action>
+	  	<!-- 删除联系组 -->
+	  	<action name="deleteContactGroup" class="com.jsoft.oa.admin.addressbook.action.ContactGroupAction" method="deleteContactGroup">
+	  		<result type="chain">selectContactGroup</result>
+	  	</action>
+	  	
+	  	<!-- ##################### 联系组管理end ######################## -->
+	  	
+	  	<!-- ##################### 联系人管理begin ######################## -->
+	  	<!-- 显示联系人管理主页面 -->
+	  	<action name="mgrContact">
+	  		<result>/WEB-INF/jsp/admin/addressbook/contactMain.jsp</result>
+	  	</action>
+	  	<!-- 显示左边页面 -->
+	  	<action name="contactLeft">
+	  		<interceptor-ref name="loginStack"/>
+	  		<result>/WEB-INF/jsp/admin/addressbook/contactLeft.jsp</result>
+	  	</action>
+	  	<!-- 右边页面分页查询联系人 -->
+	  	<action name="selectContact" class="com.jsoft.oa.admin.addressbook.action.ContactAction" method="selectContact">
+	  		<result>/WEB-INF/jsp/admin/addressbook/contact.jsp</result>
+	  	</action>
+	  	<!-- 异步加载联系组树 -->
+	  	<action name="loadContactGroupTreeAjax" class="com.jsoft.oa.admin.addressbook.action.AddressbookAjax" method="loadContactGroupTreeAjax">
+	  		<interceptor-ref name="loginStack"/>
+	  		<result type="json">
+	  			<param name="root">responseData</param>
+	  			<param name="enableGZIP">true</param>
+	  		</result>
+	  	</action>
+	  	<!-- 显示添加联系人页面 -->
+	  	<action name="showAddContact" class="com.jsoft.oa.admin.addressbook.action.ContactAction">
+	  		<result>/WEB-INF/jsp/admin/addressbook/addContact.jsp</result>
+	  	</action>
+	  	<!-- 添加联系人 -->
+	  	<action name="addContact" class="com.jsoft.oa.admin.addressbook.action.ContactAction" method="addContact">
+	  		<result>/WEB-INF/jsp/admin/addressbook/addContact.jsp</result>
+	  		<result name="invalid.token">/WEB-INF/jsp/admin/addressbook/addContact.jsp</result>
+	  	</action>
+	  	<!-- 显示修改联系人页面 -->
+	  	<action name="showUpdateContact" class="com.jsoft.oa.admin.addressbook.action.ContactAction" method="showUpdateContact">
+	  		<result>/WEB-INF/jsp/admin/addressbook/updateContact.jsp</result>
+	  	</action>
+	  	<!-- 修改联系人 -->
+	  	<action name="updateContact" class="com.jsoft.oa.admin.addressbook.action.ContactAction" method="updateContact">
+	  		<result>/WEB-INF/jsp/admin/addressbook/updateContact.jsp</result>
+	  		<result name="invalid.token">/WEB-INF/jsp/admin/addressbook/updateContact.jsp</result>
+	  	</action>
+	  	<!-- 删除联系人 -->
+	  	<action name="deleteContact" class="com.jsoft.oa.admin.addressbook.action.ContactAction" method="deleteContact">
+	  		<result type="chain">selectContact</result>
+	  	</action>
+	  	<!-- 导出联系人到Excel -->
+	  	<action name="exportContact" class="com.jsoft.oa.admin.addressbook.action.ContactAction" method="exportContact" />
+	  	<!-- 从Excel导入联系人 -->
+	  	<action name="importContact" class="com.jsoft.oa.admin.addressbook.action.ContactAction" method="importContact">
+	  		<result type="chain">selectContact</result>
+	  	</action>
+	  	
+	  	<!-- ##################### 联系人管理end ######################## -->
+	  	
+
+	</package>
+	
+
+</struts>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    	 http://www.springframework.org/schema/beans/spring-beans.xsd
+     	 http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/tx
+     	 http://www.springframework.org/schema/tx/spring-tx.xsd">
+     	 
+    <!-- ############# 主键code生成器数据访问bean ################## -->
+    <bean id="generatorDao" class="com.jsoft.oa.core.dao.impl.GeneratorDaoImpl"></bean>
+    
+	<!-- ############# 系统管理模块的数据访问Bean ################# -->
+	<bean id="deptDao" class="com.jsoft.oa.admin.identity.dao.impl.DeptDaoImpl"></bean>
+	<bean id="jobDao" class="com.jsoft.oa.admin.identity.dao.impl.JobDaoImpl"></bean>
+	<bean id="moduleDao" class="com.jsoft.oa.admin.identity.dao.impl.ModuleDaoImpl"></bean>
+	<bean id="popedomDao" class="com.jsoft.oa.admin.identity.dao.impl.PopedomDaoImpl"></bean>
+	<bean id="roleDao" class="com.jsoft.oa.admin.identity.dao.impl.RoleDaoImpl"></bean>
+	<bean id="userDao" class="com.jsoft.oa.admin.identity.dao.impl.UserDaoImpl"></bean>
+	
+	<!-- ############# 通讯录管理模块的数据访问Bean ################# -->
+	<bean id="contactDao" class="com.jsoft.oa.admin.addressbook.dao.impl.ContactDaoImpl"></bean>
+	<bean id="contactGroupDao" class="com.jsoft.oa.admin.addressbook.dao.impl.ContactGroupDaoImpl"></bean>
+	
+	<!-- ############# 假期管理模块的数据访问Bean ################# -->
+	<bean id="leaveAuditDao" class="com.jsoft.oa.admin.leave.dao.impl.LeaveAuditDaoImpl"></bean>
+	<bean id="leaveItemDao" class="com.jsoft.oa.admin.leave.dao.impl.LeaveItemDaoImpl"></bean>
+	<bean id="leaveTypeDao" class="com.jsoft.oa.admin.leave.dao.impl.LeaveTypeDaoImpl"></bean>
+	
+	
+</beans>   

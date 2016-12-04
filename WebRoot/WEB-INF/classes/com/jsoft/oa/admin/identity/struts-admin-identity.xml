@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+	<package name="admin-identity" namespace="/admin/identity" extends="admin">
+	
+		<!-- ######################### 用户管理begin ##################### -->
+		<!-- 多条件分页查询用户，显示用户列表 -->
+	 	<action name="selectUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="selectUser">
+	 		<result>/WEB-INF/jsp/admin/identity/user.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 异步加载部门id和name -->
+	 	<action name="loadDeptByIdAndNameAjax" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadDeptByIdAndNameAjax">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result type="json">
+	 			<param name="root">responseData</param>
+	 		</result>
+	 	</action>
+	 	<!-- 异步加载联想(模糊查询)的用户name -->
+	 	<action name="loadUserNameAjax" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadUserNameAjax">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result type="json">
+	 			<param name="root">responseUserNameData</param>
+	 		</result>
+	 	</action>
+	 	
+	 	<!-- 显示添加用户页面 -->
+	 	<action name="showAddUser">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 异步加载部门和职位数据 -->
+	 	<action name="loadDeptAndJobAjax" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadDeptAndJobAjax">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result type="json">
+	 			<param name="root">responseDeptAndJobData</param>
+	 		</result>
+	 	</action>
+	 	
+	 	<!-- 异步判断用户登录名是否已存在 -->
+	 	<action name="loadUserIdAjax" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadUserIdAjax">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result type="json">
+	 			<param name="root">responseUserIdData</param>
+	 		</result>
+	 	</action>
+	 	
+	 	<!-- 添加用户 -->
+	 	<action name="addUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="addUser">
+	 		<!-- 因为引用了引用防表单重复提交拦截器，需要再引用权限拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="popedomStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/addUser.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/addUser.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 显示修改用户页面 -->
+	 	<action name="showUpdateUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="showUpdateUser">
+	 		<result>/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 修改用户 -->
+	 	<action name="updateUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="updateUser">
+	 		<!-- 因为引用了引用防表单重复提交拦截器，需要再引用权限拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="popedomStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 删除用户 -->
+	 	<action name="deleteUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="deleteUser">
+	 		<result type="chain">selectUser</result>
+	 	</action>
+	 	
+	 	<!-- 审核用户 -->
+	 	<action name="checkUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="checkUser">
+	 		<result type="chain">selectUser</result>
+	 	</action>
+	 	
+	 	<!-- ######################### 用户管理end ##################### -->
+	 	
+	 	<!-- ######################### 角色管理begin ##################### -->
+	 	<!-- 分页显示角色列表 -->
+	 	<action name="selectRole" class="com.jsoft.oa.admin.identity.action.RoleAction" method="selectRole">
+	 		<result>/WEB-INF/jsp/admin/identity/role.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 显示添加角色页面 -->
+	 	<action name="showAddRole">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/addRole.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 添加角色-->
+	 	<action name="addRole" class="com.jsoft.oa.admin.identity.action.RoleAction" method="addRole">
+	 		<!-- 因为引用了引用防表单重复提交拦截器，需要再引用权限拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="popedomStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/addRole.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/addRole.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/addRole.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 显示修改角色页面 -->
+	 	<action name="showUpdateRole" class="com.jsoft.oa.admin.identity.action.RoleAction" method="showUpdateRole">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 修改角色-->
+	 	<action name="updateRole" class="com.jsoft.oa.admin.identity.action.RoleAction" method="updateRole">
+	 		<!-- 因为引用了引用防表单重复提交拦截器，需要再引用权限拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="popedomStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 删除角色 -->
+	 	<action name="deleteRole" class="com.jsoft.oa.admin.identity.action.RoleAction" method="deleteRole">
+	 		<result type="chain">selectRole</result>
+	 	</action>
+	 	<!-- ######################### 角色管理end ##################### -->
+	 	
+	 	<!-- #########################  操作管理begin ############################-->
+	 	<!-- 显示操作管理主页面 -->
+	 	<action name="mgrModule">
+	 		<result>/WEB-INF/jsp/admin/identity/moduleMain.jsp</result>
+	 	</action>
+	 	<!-- 操作管理左边子页面：操作树-->
+	 	<action name="moduleLeft">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/moduleLeft.jsp</result>
+	 	</action>
+	 	<!-- 异步加载用于创建左边子页面操作树节点的数据 -->
+	 	<action name="loadModuleTreeAjax" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadModuleTreeAjax">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result type="json">
+	 			<param name="root">responseData</param>
+	 			<!-- 对响应的json数据进行GZIP压缩 -->
+	 			<param name="enableGZIP">true</param>
+	 		</result>
+	 	</action>
+	 	<!-- 分页显示操作-->
+	 	<action name="selectModule" class="com.jsoft.oa.admin.identity.action.ModuleAction" method="selectModule">
+	 		<result>/WEB-INF/jsp/admin/identity/module.jsp</result>
+	 	</action>
+	 	<!-- 显示添加操作页面 -->
+	 	<action name="showAddModule" class="com.jsoft.oa.admin.identity.action.ModuleAction">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/addModule.jsp</result>
+	 	</action>
+	 	<!-- 添加操作 -->
+	 	<action name="addModule" class="com.jsoft.oa.admin.identity.action.ModuleAction" method="addModule">
+	 		<result>/WEB-INF/jsp/admin/identity/addModule.jsp</result>
+	 	</action>
+	 	<!-- 显示修改操作页面 -->
+	 	<action name="showUpdateModule" class="com.jsoft.oa.admin.identity.action.ModuleAction" method="showUpdateModule">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/updateModule.jsp</result>
+	 	</action>
+	 	<!-- 修改操作 -->
+	 	<action name="updateModule" class="com.jsoft.oa.admin.identity.action.ModuleAction" method="updateModule">
+	 		<result>/WEB-INF/jsp/admin/identity/updateModule.jsp</result>
+	 	</action>
+	 	<!-- 删除操作 -->
+	 	<action name="deleteModule" class="com.jsoft.oa.admin.identity.action.ModuleAction" method="deleteModule">
+	 		<result type="chain">selectModule</result>
+	 	</action>
+	 	<!-- #########################  操作管理end ############################-->
+	 	
+	 	<!-- ######################### 角色绑定管理begin ############################-->
+	 	<!-- 根据角色id查询用户（当前角色已绑定的用户） -->
+	 	<action name="selectRoleUser" class="com.jsoft.oa.admin.identity.action.RoleBindAction" method="selectRoleUser">
+	 		<result>/WEB-INF/jsp/admin/identity/roleUser.jsp</result>
+	 	</action>
+	 	<!-- 显示准备绑定(未绑定)到当前角色的用户 -->
+	 	<action name="showBindUser" class="com.jsoft.oa.admin.identity.action.RoleBindAction" method="showBindUser">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/bindUser.jsp</result>
+	 	</action>
+	 	<!-- 为角色绑定用户 -->
+	 	<action name="bindUser" class="com.jsoft.oa.admin.identity.action.RoleBindAction" method="bindUser">
+	 		<result type="chain">showBindUser</result>
+	 	</action>
+	 	<!-- 为角色解除用户 -->
+	 	<action name="unBindUser" class="com.jsoft.oa.admin.identity.action.RoleBindAction" method="unBindUser">
+	 		<result type="chain">selectRoleUser</result>
+	 	</action>
+	 	<!-- 显示绑定操作主页面-->
+	 	<action name="mgrPopedom" class="com.jsoft.oa.admin.identity.action.RoleBindAction">
+	 		<result>/WEB-INF/jsp/admin/identity/popedomMain.jsp</result>
+	 	</action>
+	 	<!-- 显示绑定操作左边子页面 -->
+	 	<action name="popedomLeft" class="com.jsoft.oa.admin.identity.action.RoleBindAction">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/popedomLeft.jsp</result>
+	 	</action>
+	 	<!-- 异步加载权限树 -->
+	 	<action name="loadPopdomTreeAjax" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadPopdomTreeAjax">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result type="json">
+	 			<param name="root">responseData</param>
+	 			<param name="enableGZIP">true</param>
+	 		</result>
+	 	</action>
+	 	<!-- 显示绑定操作右边页面：操作列表 -->
+	 	<action name="selectPopedom" class="com.jsoft.oa.admin.identity.action.RoleBindAction" method="selectPopedom">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/popedom.jsp</result>
+	 	</action>
+	 	<!-- 角色绑定操作 -->
+	 	<action name="bindModule" class="com.jsoft.oa.admin.identity.action.RoleBindAction" method="bindModule">
+	 		<result type="chain">selectPopedom</result>
+	 	</action>
+	 	<!-- ######################### 角色绑定管理end ############################-->
+	 	
+	 	<!-- ######################### 部门管理begin ############################-->
+	 	<!-- 分页查询部门 -->
+	 	<action name="selectDept" class="com.jsoft.oa.admin.identity.action.DeptAction" method="selectDept">
+	 		<result>/WEB-INF/jsp/admin/identity/dept.jsp</result>
+	 	</action>
+	 	<!-- 显示添加部门页面 -->
+	 	<action name="showAddDept">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/addDept.jsp</result>
+	 	</action>
+	 	<!-- 添加部门-->
+	 	<action name="addDept" class="com.jsoft.oa.admin.identity.action.DeptAction" method="addDept">
+	 		<!-- 因为引用了引用防表单重复提交拦截器，需要再引用权限拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="popedomStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/addDept.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/addDept.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/addDept.jsp</result>
+	 	</action>
+	 	<!-- 显示修改部门页面 -->
+	 	<action name="showUpdateDept" class="com.jsoft.oa.admin.identity.action.DeptAction" method="showUpdateDept">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/updateDept.jsp</result>
+	 	</action>
+	 	<!-- 修改部门 -->
+	 	<action name="updateDept" class="com.jsoft.oa.admin.identity.action.DeptAction" method="updateDept">
+	 		<!-- 因为引用了引用防表单重复提交拦截器，需要再引用权限拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="popedomStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/updateDept.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/updateDept.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/updateDept.jsp</result>
+	 	</action>
+	 	<!-- 删除部门 -->
+	 	<action name="deleteDept" class="com.jsoft.oa.admin.identity.action.DeptAction" method="deleteDept">
+	 		<result type="chain">selectDept</result>
+	 	</action>
+	 	<!-- ######################### 部门管理end ############################-->
+	 	
+	 	<!-- ######################### 职位管理begin ############################-->
+	 	<!-- 分页查询职位 -->
+	 	<action name="selectJob" class="com.jsoft.oa.admin.identity.action.JobAction" method="selectJob">
+	 		<result>/WEB-INF/jsp/admin/identity/job.jsp</result>
+	 	</action>
+	 	<!-- 显示添加职位页面 -->
+	 	<action name="showAddJob">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/addJob.jsp</result>
+	 	</action>
+	 	<!-- 添加职位-->
+	 	<action name="addJob" class="com.jsoft.oa.admin.identity.action.JobAction" method="addJob">
+	 		<!-- 因为引用了引用防表单重复提交拦截器，需要再引用权限拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="popedomStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/addJob.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/addJob.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/addJob.jsp</result>
+	 	</action>
+	 	<!-- 显示修改职位页面 -->
+	 	<action name="showUpdateJob" class="com.jsoft.oa.admin.identity.action.JobAction" method="showUpdateJob">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/identity/updateJob.jsp</result>
+	 	</action>
+	 	<!-- 修改职位 -->
+	 	<action name="updateJob" class="com.jsoft.oa.admin.identity.action.JobAction" method="updateJob">
+	 		<!-- 因为引用了引用防表单重复提交拦截器，需要再引用权限拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="popedomStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/updateJob.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/updateJob.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/updateJob.jsp</result>
+	 	</action>
+	 	<!-- 删除职位 -->
+	 	<action name="deleteJob" class="com.jsoft.oa.admin.identity.action.JobAction" method="deleteJob">
+	 		<result type="chain">selectJob</result>
+	 	</action>
+	 	<!-- ######################### 职位管理end ############################-->
+	 	
+	 	
+	 	
+	 	
+	</package>
+	
+
+</struts>

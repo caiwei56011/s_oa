@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<!-- 常用常量配置 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="false"></constant>
+	<constant name="struts.devMode" value="true"></constant>
+	<constant name="struts.action.extension" value="jspx,action,do"/>
+	
+	<!-- 配置全局的国际化资源文件 -->
+	<constant name="struts.custom.i18n.resources" value="oa_messages"></constant>
+	
+	<!-- 项目包继承自json-default包,可以使结果视图多一个json类型 -->
+	<package name="oa" namespace="/" extends="json-default">
+	
+	   <!-- 全局结果配置 -->
+        <global-results>
+            <result name="error">/error.jsp</result>
+            <result name="login">/WEB-INF/jsp/admin/login.jsp</result>
+        </global-results>
+        
+		<!-- 全局异常配置 (开发阶段不建议配置全局异常，否则页面无法看到错误信息)
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+        -->
+        
+        <!-- 测试事物控制 
+        <action name="test" class="com.jsoft.oa.admin.identity.action.DeptAction">
+        	<result>/index.jsp</result>
+        </action>
+		-->
+		
+		<!-- 配置返回图形验证码的action -->
+		<action name="verify" class="com.jsoft.oa.core.action.VerifyAction" />
+		
+		<!-- 异步发送短信验证码 -->
+        <action name="sendSMSAjax" class="com.jsoft.oa.core.action.SmsVerifyAction">
+        	<result type="json">
+        		<param name="root">smsSuccess</param>
+        	</result>
+        </action>
+		
+	</package>
+	
+	<!-- 引入子系统级别的struts文件 -->
+	<include file="com/jsoft/oa/admin/struts-admin.xml"></include>
+</struts>

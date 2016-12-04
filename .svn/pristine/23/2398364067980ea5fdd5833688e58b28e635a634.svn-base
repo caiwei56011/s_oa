@@ -1,0 +1,116 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, p, span, a, blockquote, th {margin:0;padding:0}
+h1, h2, h3, h4, h5, h6 {font-size:100%; font-weight:normal;}
+ol, ul {list-style-image:none; list-style-type:none;}
+ul li {list-style-type:none; padding:0; margin:0;}
+img, fieldset {border:0 none; vertical-align:top;}
+html, body, #wrapper {height: 100%;}
+BODY {
+	BACKGROUND-COLOR: #fff; COLOR: #000
+}
+BODY, TABLE {
+	LINE-HEIGHT: 150%; FONT-FAMILY: "Verdana", "Arial", "Helvetica", "sans-serif"; FONT-SIZE: 12px
+}
+INPUT, SELECT, TEXTAREA {
+	FONT-FAMILY: "Verdana", "Arial", "Helvetica", "sans-serif"; FONT-SIZE: 12px
+}
+a:link,a:visited{color:#036; text-decoration:none;}
+a:hover,a:active{color:#ff0000; text-decoration:underline;}
+
+/* header file */
+.headerbg { height:56px; background:url(../images/header_bg.jpg) repeat-x;}
+.toploca { background-color:#2B6FBD; height:30px;color:#FFFFFF;}
+.toploca_ico { float:left; padding-left:24px;}
+.titlebar { float:left; padding:4px 0 0 6px;}
+.titlebar span { color:#FFFF00; font-weight:bold;}
+.titlebar a:link, .titlebar a:visited{color:#fff; text-decoration:underline;}
+.titlebar a:hover, .titlebar a:active{color:#FFFF00; text-decoration:underline;}
+
+/* left file */
+#leftbg { background:url(../images/menu_bg.jpg) repeat-y; width:170px;}
+#leftbg TABLE { text-align:left;}
+A.menuChild:link {
+	COLOR: #036; TEXT-DECORATION: none
+}
+A.menuChild:visited {
+	COLOR: #036; TEXT-DECORATION: none
+}
+A.menuChild:hover {
+	COLOR: #ff0000; TEXT-DECORATION: underline
+}
+A.menuParent:link {
+	COLOR: #000; TEXT-DECORATION: none
+}
+A.menuParent:visited {
+	COLOR: #000; TEXT-DECORATION: none
+}
+A.menuParent:hover {
+	COLOR: #ff0000; TEXT-DECORATION: none
+}
+
+/* right file*/
+#wrapper{width:100%;}
+body > #wrapper {height:auto; min-height:100%;}
+#main {padding-bottom: 54px;min-width:98%;}/* 必须使用和footer相同的高度,最小宽度ie6中加JS解决 */
+#footer {
+ position: relative;
+ margin-top: -54px; /* footer高度的负值 */
+ height: 54px;/* footer高度*/ 
+ width:98%;
+ min-width:98%;/*最小宽度ie6中加JS解决*/
+ clear:both;
+ text-align:center;
+ color:#000;
+}
+#infoot{text-align:center;height:54px;line-height:18px;width:98%;margin:0 auto; margin-top:15px;}
+
+TABLE.position {
+	WIDTH: 100%
+}
+TR.position {
+	BACKGROUND-COLOR: #f4f7fc; HEIGHT: 25px
+}
+TD.position {
+	BORDER-BOTTOM: #adceff 1px solid; PADDING-LEFT: 20px; BORDER-RIGHT: #adceff 1px solid
+}
+TABLE.listTable {
+	BACKGROUND-COLOR: #b1ceee; WIDTH: 100%;
+}
+TR.listHeaderTr {
+	TEXT-ALIGN: center; BACKGROUND-COLOR: #ebf4fd; HEIGHT: 25px; FONT-WEIGHT: bold
+}
+TR.listTr {
+	TEXT-ALIGN: center; BACKGROUND-COLOR: #fff; HEIGHT: 25px
+}
+TR.listAlternatingTr {
+	TEXT-ALIGN: center; BACKGROUND-COLOR: #fffdf0; HEIGHT: 25px
+}
+TR.listFooterTr {
+	TEXT-ALIGN: center; BACKGROUND-COLOR: #ebf4fd; HEIGHT: 30px
+}
+TABLE.editTable {
+	BACKGROUND-COLOR: #b1ceee; WIDTH: 98%
+}
+TR.editHeaderTr {
+	BACKGROUND-COLOR: #ebf4fd; HEIGHT: 35px
+}
+TD.editHeaderTd {
+	PADDING-LEFT: 24px; FONT-WEIGHT: bold; font-size:14px;
+}
+TR.editTr {
+	HEIGHT: 30px
+}
+TD.editLeftTd {
+	TEXT-ALIGN: center; BACKGROUND-COLOR: #fffdf0; WIDTH: 150px
+}
+TD.editHeaderTdtit{
+	text-indent:24px; BACKGROUND-COLOR: #fffdf0;
+}
+TD.editRightTd {
+	BACKGROUND-COLOR: #fff; PADDING-LEFT: 10px; font-family:"宋体";
+}
+TR.editFooterTr {
+	BACKGROUND-COLOR: #ebf4fd; HEIGHT: 40px
+}
+TD.editFooterTd {
+	PADDING-LEFT: 150px
+}

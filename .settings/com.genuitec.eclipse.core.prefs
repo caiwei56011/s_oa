@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+validator.Checked=src/com/jsoft/oa/admin/interceptor/LoginInterceptor.java,WebRoot/js/jquery
+validator.Unchecked=

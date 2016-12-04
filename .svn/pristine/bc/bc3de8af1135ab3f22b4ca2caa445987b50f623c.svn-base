@@ -1,0 +1,297 @@
+package com.jsoft.oa.admin.identity.service.impl;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+
+import com.jsoft.oa.admin.AdminConstant;
+import com.jsoft.oa.admin.identity.dao.DeptDao;
+import com.jsoft.oa.admin.identity.dao.JobDao;
+import com.jsoft.oa.admin.identity.dao.ModuleDao;
+import com.jsoft.oa.admin.identity.dao.PopedomDao;
+import com.jsoft.oa.admin.identity.dao.RoleDao;
+import com.jsoft.oa.admin.identity.dao.UserDao;
+import com.jsoft.oa.admin.identity.entity.User;
+import com.jsoft.oa.admin.identity.service.IdentityService;
+import com.jsoft.oa.core.action.VerifyAction;
+import com.jsoft.oa.core.common.security.MD5_32;
+import com.jsoft.oa.core.common.web.CookieTools;
+import com.jsoft.oa.core.common.web.PageModel;
+import com.jsoft.oa.core.exception.OAException;
+import com.opensymphony.xwork2.ActionContext;
+
+/**
+ * 权限管理业务处理接口实现类
+ * @author Administrator
+ * @date 2016年8月16日 下午9:00:50 
+ * @version V1.0
+ */
+public class IdentityServiceImpl implements IdentityService {
+	/**整合该模块下的所有数据访问接口,实现业务处理*/
+	@Resource
+	private DeptDao deptDao;
+	@Autowired
+	private JobDao jobDao;
+	@Resource
+	private ModuleDao moduleDao;
+	@Resource
+	private PopedomDao popedomDao;
+	@Resource
+	private RoleDao roleDao;
+	@Resource
+	private UserDao userDao;
+	
+	/**
+	 * 登陆方法
+	 * @param userId 用户名
+	 * @param password 密码
+	 * @param vcode 验证码
+	 * @param key 是否记住用户，1表示记住
+	 * @return Map集合
+	 */
+	@Override
+	public Map<String, Object> login(String userId, String password,
+			String vcode, int key) {
+		try {
+			Map<String, Object> responseData = new HashMap<String, Object>();
+			/** 从session中获取已生成的正确验证码 */
+			String verifyCode = (String) ServletActionContext.
+					getRequest().getSession().getAttribute(VerifyAction.VERIFY_CODE);
+			/** 判断验证码是否正确 */
+			if(!StringUtils.isEmpty(vcode) && vcode.equalsIgnoreCase(verifyCode))
+			{
+				/** 判断用户名密码是否为空 */
+				if(!StringUtils.isEmpty(userId) && !StringUtils.isEmpty(password))
+				{
+					/** 调用dao层，在数据库中按用户名查找 */
+					User user = userDao.get(User.class, userId);
+					/** 判断用户名密码是否正确 */
+					if( user != null && MD5_32.encryption(password).equalsIgnoreCase(user.getPassWord()) )
+					{
+						/** 登录成功，将user存入session*/
+						ActionContext.getContext().getSession().put(AdminConstant.SESSION_USER, user);
+						/** 是否记住用户 */
+						if(key == 1)
+						{
+							/** 将userId添加到浏览器cookie中,最大存活时间为7天 */
+							CookieTools.addCookie(AdminConstant.COOKIE_NAME, userId, AdminConstant.COOKIE_MAX_AGE);
+						}
+						responseData.put("tip", "登录成功");
+						responseData.put("status", 0);
+					}
+					else
+					{
+						responseData.put("tip", "用户名或密码不正确");
+						responseData.put("status", 3);
+					}
+				}
+				else
+				{
+					responseData.put("tip", "用户名或密码不能为空");
+					responseData.put("status", 2);
+				}
+			}
+			else
+			{
+				responseData.put("tip", "验证码不正确");
+				responseData.put("status", 1);
+			}
+			return responseData;
+			
+		} catch (Exception e) {
+			throw new OAException("登录方法出现异常",e);
+		}
+		
+	}
+
+	/**
+	 * 根据userId查询用户
+	 * @param userId 用户id
+	 * @param isMD5 用户id是否进行了md5加密
+	 * @return 用户
+	 * @throws Exception 
+	 */
+	@Override
+	public User getUser(String userId, boolean isMD5) {
+		try {
+			User user = null;
+			if(isMD5)
+			{
+				user = userDao.getUser(userId);
+			}
+			else
+			{
+				user = userDao.get(User.class, userId);
+			}
+			return user;
+		} catch (Exception e) {
+			throw new OAException("根据userId查询用户时出现异常",e);
+		}
+		
+	}
+
+	/**
+	 * 多条件分页查询用户
+	 * @param user 用户查询条件
+	 * @param pageModel  分页参数
+	 * @return 用户集合
+	 */
+	@Override
+	public List<User> getUserByPage(User user, PageModel pageModel) {
+		try {
+			List<User> users =  userDao.getUserByPage(user, pageModel);
+			/** 手动加载懒加载的属性中数据,供jsp页面显示 */
+			for (User u : users) {
+				/** 加载部门 */
+				if(u.getDept() != null) u.getDept().getName();
+				/** 加载职位 */
+				if(u.getJob() != null) u.getJob().getName();
+				/** 加载创建人 */
+				if(u.getCreater() != null) u.getCreater().getName();
+				/** 加载审核人 */
+				if(u.getChecker() != null) u.getChecker().getName();
+			}
+			return users;
+		} catch (Exception e) {
+			throw new OAException("多条件分页查询用户方法时出现异常",e);
+		}
+		
+	}
+
+	/**
+	 * 加载部门
+	 * @return list集合 
+	 */
+	@Override
+	public List<Map<String, Object>> loadDept() {
+		try {
+			return deptDao.getDeptByIdAndName();
+		} catch (Exception e) {
+			throw new OAException("加载部门方法时出现异常",e);
+		}
+	}
+
+	/**
+	 * 加载联想(模糊查询)的用户name
+	 * @param userName
+	 * @return list集合
+	 */
+	@Override
+	public List<String> loadUserName(String userName) {
+		try {
+			return userDao.getUserName(userName);
+		} catch (Exception e) {
+			throw new OAException("加载用户name方法时出现异常",e);
+		}
+	}
+
+	/**
+	 * 加载部门和职位数据
+	 * @return map集合
+	 */
+	@Override
+	public Map<String, List<Map<String, Object>>> loadDeptAndJob() {
+		try {
+			Map<String, List<Map<String, Object>>> responseDeptAndJobData = new HashMap<>();
+			List<Map<String, Object>> deptMap =  deptDao.getDeptByIdAndName();
+			List<Map<String, Object>> jobMap = jobDao.getJobByCodeAndName();
+			responseDeptAndJobData.put("depts", deptMap);
+			responseDeptAndJobData.put("jobs", jobMap);
+			return responseDeptAndJobData;
+		} catch (Exception e) {
+			throw new OAException("加载部门和职位数据方法时出现异常",e);
+		}
+	}
+
+	/**
+	 * 添加用户
+	 * @param user 用户实体
+	 */
+	@Override
+	public void addUser(User user) {
+		try {
+			user.setCreateDate(new Date());
+			user.setCreater(AdminConstant.getSessionUser());
+			user.setPassWord( MD5_32.encryption(user.getPassWord()) );
+			userDao.save(user);
+		} catch (Exception e) {
+			throw new OAException("添加用户方法时出现异常",e);
+		}
+	}
+
+	/**
+	 * 获取用户登录名
+	 * @param userId 表单中填写的登录名
+	 * @return
+	 */
+	@Override
+	public String loadUserId(String userId) {
+		try {
+			
+			return userDao.getUserId(userId);
+		} catch (Exception e) {
+			throw new OAException("获取用户登录名方法时出现异常",e);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*测试事务控制
+	public void run() 
+	{
+		try {
+			Dept d = new Dept();
+			d.setName("运维部");
+			deptDao.save(d);
+			
+			int i = 1 / 0;
+			
+			Job j = new Job();
+			j.setCode("0010");
+			j.setName("运维工程师");
+			jobDao.save(j);
+		} catch (Exception e) {
+			//e.printStackTrace();
+			//throw new Exception(e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void getDept() {
+		Dept d = new Dept();
+		d.setName("运维部222");
+		deptDao.save(d);
+		System.out.println("test运维部222");
+	}
+	*/
+}

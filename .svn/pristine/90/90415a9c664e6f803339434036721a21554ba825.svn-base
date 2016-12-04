@@ -1,0 +1,121 @@
+package com.jsoft.oa.admin.identity.action;
+
+import java.util.List;
+
+import com.jsoft.oa.admin.identity.entity.Role;
+import com.jsoft.oa.core.common.web.PageModel;
+
+/**
+ * 角色管理的控制器
+ * @author Administrator
+ * @date 2016年8月24日 下午9:10:23 
+ * @version V1.0
+ */
+public class RoleAction extends IdentityAction {
+	private static final long serialVersionUID = 190346327166446768L;
+	/** 封装页面传入的角色参数 */
+	private Role role;
+	/** 保存查询到的角色列表 */
+	private List<Role> roles;
+	/** 封装页面传入的 角色id*/
+	private String roleIds;
+	
+	/**
+	 * 分页显示角色列表
+	 * @return
+	 */
+	public String selectRole()
+	{
+		try {
+			/** 第一次访问此方法的时候未传入分页参数，无法自动封装，需要手动创建pageModel对象 */
+			if(pageModel == null) pageModel = new PageModel();
+			roles = identityService.getRoleByPage(pageModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	/**
+	 * 添加角色
+	 * @return
+	 */
+	public String addRole()
+	{
+		try {
+			identityService.addRole(role);
+			setTip("添加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			setTip("添加失败");
+		}
+		return SUCCESS;
+	}
+	/**
+	 * 显示修改角色页面
+	 * @return
+	 */
+	public String showUpdateRole()
+	{
+		try {
+			if(role != null)
+			role  = identityService.getRole(role.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * 修改角色
+	 * @return
+	 */
+	public String updateRole()
+	{
+		try {
+			identityService.updateRole(role);
+			setTip("修改成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			setTip("修改失败");
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * 删除角色
+	 */
+	public String deleteRole()
+	{
+		try {
+			identityService.deleteRole(roleIds.split(","));
+			setTip("删除成功");
+		} catch (Exception e) {
+			setTip("删除失败");
+		}
+		return SUCCESS;
+	}
+	
+	/** getter and setter method */
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
+	}
+	public List<Role> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+	public String getRoleIds() {
+		return roleIds;
+	}
+	public void setRoleIds(String roleIds) {
+		this.roleIds = roleIds;
+	}
+	
+	
+	
+
+}

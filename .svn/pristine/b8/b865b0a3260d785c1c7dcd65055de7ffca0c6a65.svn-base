@@ -1,0 +1,14 @@
+package com.jsoft.oa.admin.leave.dao.impl;
+
+import com.jsoft.oa.admin.leave.dao.LeaveItemDao;
+import com.jsoft.oa.core.dao.impl.HibernateDaoImpl;
+
+/**
+ * 假期明细的访问接口实现类
+ * @author Administrator
+ * @date 2016年8月16日 下午7:33:17 
+ * @version V1.0
+ */
+public class LeaveItemDaoImpl extends HibernateDaoImpl implements LeaveItemDao{
+	
+}

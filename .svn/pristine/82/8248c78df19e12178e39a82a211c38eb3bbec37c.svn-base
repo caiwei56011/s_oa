@@ -1,0 +1,87 @@
+package com.jsoft.oa.admin.identity.action;
+
+import java.util.List;
+
+import org.apache.struts2.ServletActionContext;
+
+import com.jsoft.oa.admin.identity.entity.User;
+import com.jsoft.oa.core.common.web.PageModel;
+
+/**
+ * 用户控制器
+ * @author Administrator
+ * @date 2016年8月20日 下午5:07:25 
+ * @version V1.0
+ */
+public class UserAction extends IdentityAction {
+	private static final long serialVersionUID = -5900430889973008012L;
+	/** 定义用户类型的属性封装请求参数 */
+	private User user;
+	/** 封装确认密码参数 */
+	private String repwd;
+	/** 定义list集合保存查询返回的用户列表 */
+	private List<User> users;
+
+	/**
+	 * 多条件分页查询用户
+	 * @return
+	 */
+	public String selectUser()
+	{
+		try {
+			/** 第一次访问此方法的时候未传入分页参数，无法自动封装，需要手动创建pageModel对象 */
+			if(pageModel == null) pageModel = new PageModel();
+			/** 处理点击分页标签提交查询请求时,get请求中文数据乱码问题 */
+			String method = ServletActionContext.getRequest().getMethod();
+			if("get".equalsIgnoreCase(method) && user != null)
+			{
+				String userName = new String(user.getName().getBytes("iso8859-1"),"utf-8");
+				user.setName(userName);
+			}
+			users = identityService.getUserByPage(user, pageModel);
+			//System.out.println(users);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	/**
+	 * 添加用户
+	 * @return
+	 */
+	public String addUser()
+	{
+		try {
+			identityService.addUser(user);
+			setTip("添加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			setTip("添加失败");
+		}
+		return SUCCESS;
+	}
+	
+	
+	/** getter and setter method*/
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public List<User> getUsers() {
+		return users;
+	}
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+	
+	public String getRepwd() {
+		return repwd;
+	}
+	public void setRepwd(String repwd) {
+		this.repwd = repwd;
+	}
+	
+
+}

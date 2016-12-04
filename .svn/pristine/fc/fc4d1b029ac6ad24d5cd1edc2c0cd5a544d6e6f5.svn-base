@@ -1,0 +1,26 @@
+package com.jsoft.oa.admin.identity.dao.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import com.jsoft.oa.admin.identity.dao.JobDao;
+import com.jsoft.oa.core.dao.impl.HibernateDaoImpl;
+/**
+ * 职位表的访问接口实现类
+ * @author Administrator
+ * @date 2016年8月16日 下午8:32:55 
+ * @version V1.0
+ */
+public class JobDaoImpl extends HibernateDaoImpl implements JobDao{
+
+	/**
+	 * 获取部门code和name
+	 * @return list集合
+	 */
+	@Override
+	public List<Map<String, Object>> getJobByCodeAndName() {
+		String hql = "select new Map(code as code, name as name) from Job";
+		return this.find(hql);
+	}
+	
+}

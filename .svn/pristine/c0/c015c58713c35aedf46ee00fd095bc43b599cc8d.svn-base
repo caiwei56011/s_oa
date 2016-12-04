@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+	<package name="admin-identity" namespace="/admin/identity" extends="admin">
+	
+		<!-- ######################### 用户管理begin ##################### -->
+		<!-- 多条件分页查询用户，显示用户列表 -->
+	 	<action name="selectUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="selectUser">
+	 		<result>/WEB-INF/jsp/admin/identity/user.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 异步加载部门id和name -->
+	 	<action name="loadDeptByIdAndName" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadDeptByIdAndName">
+	 		<result type="json">
+	 			<param name="root">responseData</param>
+	 		</result>
+	 	</action>
+	 	<!-- 异步加载联想(模糊查询)的用户name -->
+	 	<action name="loadUserName" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadUserName">
+	 		<result type="json">
+	 			<param name="root">responseUserNameData</param>
+	 		</result>
+	 	</action>
+	 	
+	 	<!-- 显示添加用户页面 -->
+	 	<action name="showAddUser">
+	 		<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 异步加载部门和职位数据 -->
+	 	<action name="loadDeptAndJob" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadDeptAndJob">
+	 		<result type="json">
+	 			<param name="root">responseDeptAndJobData</param>
+	 		</result>
+	 	</action>
+	 	
+	 	<!-- 异步判断用户登录名是否已存在 -->
+	 	<action name="loadUserId" class="com.jsoft.oa.admin.identity.action.IdentityAjax" method="loadUserId">
+	 		<result type="json">
+	 			<param name="root">responseUserIdData</param>
+	 		</result>
+	 	</action>
+	 	
+	 	<!-- 添加用户 -->
+	 	<action name="addUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="addUser">
+	 		<!-- 引用登陆拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/addUser.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/addUser.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 显示修改用户页面 -->
+	 	<action name="showUpdateUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="showUpdateUser">
+	 		<result>/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 修改用户 -->
+	 	<action name="updateUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="updateUser">
+	 		<!-- 引用登陆拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 删除用户 -->
+	 	<action name="deleteUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="deleteUser">
+	 		<result type="chain">selectUser</result>
+	 	</action>
+	 	
+	 	<!-- 审核用户 -->
+	 	<action name="checkUser" class="com.jsoft.oa.admin.identity.action.UserAction" method="checkUser">
+	 		<result type="chain">selectUser</result>
+	 	</action>
+	 	
+	 	<!-- ######################### 用户管理end ##################### -->
+	 	
+	 	<!-- ######################### 角色管理begin ##################### -->
+	 	<!-- 分页显示角色列表 -->
+	 	<action name="selectRole" class="com.jsoft.oa.admin.identity.action.RoleAction" method="selectRole">
+	 		<result>/WEB-INF/jsp/admin/identity/role.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 显示添加角色页面 -->
+	 	<action name="showAddRole">
+	 		<result>/WEB-INF/jsp/admin/identity/addRole.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 添加角色-->
+	 	<action name="addRole" class="com.jsoft.oa.admin.identity.action.RoleAction" method="addRole">
+	 		<!-- 引用登陆拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/addRole.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/addRole.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/addRole.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 显示修改角色页面 -->
+	 	<action name="showUpdateRole" class="com.jsoft.oa.admin.identity.action.RoleAction" method="showUpdateRole">
+	 		<result>/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 修改角色-->
+	 	<action name="updateRole" class="com.jsoft.oa.admin.identity.action.RoleAction" method="updateRole">
+	 		<!-- 引用登陆拦截器栈(其中包含了默认拦截器栈) -->
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<!-- 引用防表单重复提交拦截器 -->
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<!-- 配置防表单重复提交的结果视图 -->
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
+	 		<!-- 后台校验失败的结果视图 -->
+	 		<result name="input">/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
+	 		<!-- 正常执行的结果视图 -->
+	 		<result>/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
+	 	</action>
+	 	
+	 	<!-- 删除角色 -->
+	 	<action name="deleteRole" class="com.jsoft.oa.admin.identity.action.RoleAction" method="deleteRole">
+	 		<result type="chain">selectRole</result>
+	 	</action>
+	 	<!-- ######################### 角色管理end ##################### -->
+	 	
+	 	<!-- #########################  操作管理begin ############################-->
+	 	<!-- 显示操作管理主页面 -->
+	 	<action name="mgrModule">
+	 		<result>/WEB-INF/jsp/admin/identity/moduleMain.jsp</result>
+	 	</action>
+	 	<!-- 操作管理左边子页面：操作树-->
+	 	<action name="moduleLeft">
+	 		<result>/WEB-INF/jsp/admin/identity/moduleLeft.jsp</result>
+	 	</action>
+	 	<!-- 操作管理右边子页面：分页显示操作-->
+	 	<action name="selectModule" class="com.jsoft.oa.admin.identity.action.ModuleAction" method="selectModule">
+	 		<result>/WEB-INF/jsp/admin/identity/module.jsp</result>
+	 	</action>
+	 	
+	 	
+	 	<!-- #########################  操作管理end ############################-->
+	 	
+	 	
+	</package>
+	
+
+</struts>

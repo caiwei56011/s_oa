@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<package name="admin-leave" namespace="/admin/leave" extends="admin">
+		<!-- ################# 用户请假begin ############### -->
+		<!-- 分页查询当前登录用户的请假单 -->
+		<action name="selectUserLeave" class="com.jsoft.oa.admin.leave.action.LeaveItemAction"
+			method="selectUserLeave">
+			<result>/WEB-INF/jsp/admin/leave/userLeave.jsp</result>
+		</action>
+		<!-- 异步加载假期类型(code和name) -->
+		<action name="loadLeaveTypeAjax" class="com.jsoft.oa.admin.leave.action.LeaveAjax"
+			method="loadLeaveTypeAjax">
+			<interceptor-ref name="loginStack" />
+			<result type="json">
+				<param name="root">responseData</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
+		<!-- 跳转到填写请假单的页面 -->
+		<action name="showAddLeaveItem">
+			<interceptor-ref name="loginStack" />
+			<result>/WEB-INF/jsp/admin/leave/addLeaveItem.jsp</result>
+		</action>
+		<!-- 异步加载假期类型 与 流程定义 -->
+		<action name="loadLeaveTypeAndProcessAjax" class="com.jsoft.oa.admin.leave.action.LeaveAjax"
+			method="loadLeaveTypeAndProcessAjax">
+			<interceptor-ref name="loginStack" />
+			<result type="json">
+				<param name="root">responseLists</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
+		<!-- 用户填写请假单 -->
+		<action name="addLeaveItem" class="com.jsoft.oa.admin.leave.action.LeaveItemAction"
+			method="addLeaveItem">
+			<interceptor-ref name="loginStack" />
+			<interceptor-ref name="token" />
+			<result>/WEB-INF/jsp/admin/leave/addLeaveItem.jsp</result>
+			<result name="input">/WEB-INF/jsp/admin/leave/addLeaveItem.jsp
+			</result>
+			<result name="invalid.token">/WEB-INF/jsp/admin/leave/addLeaveItem.jsp
+			</result>
+		</action>
+		<!-- ################# 用户请假end ############### -->
+		
+		<!-- ################# 假期审批begin ############### -->
+		<!-- 查询当前登录用户需要审批的请假单 -->
+		<action name="selectAuditLeave" class="com.jsoft.oa.admin.leave.action.LeaveItemAction"
+			method="selectAuditLeave">
+			<interceptor-ref name="loginStack" />
+			<result>/WEB-INF/jsp/admin/leave/auditLeave.jsp</result>
+		</action>
+		<!-- 显示审批窗口 -->
+		<action name="showAudit" class="com.jsoft.oa.admin.leave.action.LeaveItemAction"
+			method="showAudit">
+			<interceptor-ref name="loginStack" />
+			<result>/WEB-INF/jsp/admin/leave/audit.jsp</result>
+		</action>
+		<!-- 审批请假单 -->
+		<action name="audit" class="com.jsoft.oa.admin.leave.action.LeaveAuditAction"
+			method="audit">
+			<interceptor-ref name="loginStack" />
+			<result>/WEB-INF/jsp/admin/leave/audit.jsp</result>
+		</action>
+		<!-- 查看审批意见 -->
+		<action name="selectAuditResult" class="com.jsoft.oa.admin.leave.action.LeaveAuditAction"
+			method="selectAuditResult">
+			<interceptor-ref name="loginStack" />
+			<result>/WEB-INF/jsp/admin/leave/auditResult.jsp</result>
+		</action>
+		<!-- ################# 假期审批end ############### -->
+		
+		<!-- ################# 假期类型begin ############### -->
+		<!-- 显示假期类型管理主页面 -->
+	 	<action name="mgrLeaveType">
+	 		<result>/WEB-INF/jsp/admin/leave/leaveTypeMain.jsp</result>
+	 	</action>
+	 	<!-- 假期类型管理左边子页面：假期类型树-->
+	 	<action name="leaveTypeLeft">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/leave/leaveTypeLeft.jsp</result>
+	 	</action>
+	 	<!-- 异步加载用于创建左边子页面假期类型树节点的数据 (使用用户请假模块的loadLeaveTypeAjax)-->
+	 	
+	 	<!-- 分页显示假期类型-->
+	 	<action name="selectLeaveType" class="com.jsoft.oa.admin.leave.action.LeaveTypeAction" method="selectLeaveType">
+	 		<result>/WEB-INF/jsp/admin/leave/leaveType.jsp</result>
+	 	</action>
+	 	<!-- 显示添加假期类型页面 -->
+	 	<action name="showAddLeaveType" class="com.jsoft.oa.admin.leave.action.LeaveTypeAction">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/leave/addLeaveType.jsp</result>
+	 	</action>
+	 	<!-- 添加假期类型 -->
+	 	<action name="addLeaveType" class="com.jsoft.oa.admin.leave.action.LeaveTypeAction" method="addLeaveType">
+	 		<result>/WEB-INF/jsp/admin/leave/addLeaveType.jsp</result>
+	 	</action>
+	 	<!-- 显示修改假期类型页面 -->
+	 	<action name="showUpdateLeaveType" class="com.jsoft.oa.admin.leave.action.LeaveTypeAction" method="showUpdateLeaveType">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/leave/updateLeaveType.jsp</result>
+	 	</action>
+	 	<!-- 修改假期类型 -->
+	 	<action name="updateLeaveType" class="com.jsoft.oa.admin.leave.action.LeaveTypeAction" method="updateLeaveType">
+	 		<result>/WEB-INF/jsp/admin/leave/updateLeaveType.jsp</result>
+	 	</action>
+	 	<!-- 删除假期类型 -->
+	 	<action name="deleteLeaveType" class="com.jsoft.oa.admin.leave.action.LeaveTypeAction" method="deleteLeaveType">
+	 		<result type="chain">selectLeaveType</result>
+	 	</action>
+		<!-- ################# 假期类型end ############### -->
+	</package>
+
+
+</struts>

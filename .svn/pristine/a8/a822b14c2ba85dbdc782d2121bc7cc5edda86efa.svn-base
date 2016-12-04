@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+	<package name="admin" namespace="/admin" extends="oa">
+		
+		<interceptors>
+			<!-- 配置登录拦截器 -->
+			<interceptor name="loginInterceptor" class="com.jsoft.oa.admin.interceptor.LoginInterceptor" />
+			<!-- 配置登录拦截器栈，引用login拦截器和默认拦截器 -->
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="loginInterceptor" />
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 默认引用登录拦截器栈 -->
+	  	<default-interceptor-ref name="loginStack"></default-interceptor-ref>
+        
+        <!-- Admin子系统的全局action配置, 默认class为ActionSupport，默认result为SUCCESS -->
+        <action name="*">
+        	<result>/WEB-INF/jsp/admin/{1}.jsp</result>
+        </action>
+        
+        <!-- 配置异步请求登录action -->
+        <action name="loginAjax" class="com.jsoft.oa.admin.LoginAjax">
+        	<!-- 登录页面不需要进行登录拦截，否则无法使用登录页面 -->
+        	<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<!-- 结果视图返回json格式数据 -->
+        	<result type="json">
+        		<param name="root">responseData</param>
+        	</result>
+        </action>
+        
+	</package>
+	
+	<!-- 引入子模块级别的struts文件 -->
+	<include file="com/jsoft/oa/admin/addressbook/struts-admin-addressbook.xml"></include>
+	<include file="com/jsoft/oa/admin/leave/struts-admin-leave.xml"></include>
+	<include file="com/jsoft/oa/admin/identity/struts-admin-identity.xml"></include>
+</struts>

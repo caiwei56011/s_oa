@@ -1,0 +1,21 @@
+package com.jsoft.oa.admin.identity.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import com.jsoft.oa.core.dao.HibernateDao;
+/**
+ * 职位表的访问接口
+ * @author Administrator
+ * @date 2016年8月16日 下午8:32:55 
+ * @version V1.0
+ */
+public interface JobDao extends HibernateDao{
+
+	/**
+	 * 获取部门code和name
+	 * @return list集合
+	 */
+	List<Map<String, Object>> getJobByCodeAndName();
+	
+}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+	<package name="admin-workflow" namespace="/admin/workflow" extends="admin">
+	
+		<!-- ######################### 流程部署管理begin ##################### -->
+		<!-- 显示流程部署页面 -->
+	 	<action name="showProcessDeploy">
+	 		<result>/WEB-INF/jsp/admin/workflow/processDeploy.jsp</result>
+	 	</action>
+	 	<!-- 部署流程 -->
+	 	<action name="processDeploy" class="com.jsoft.oa.admin.workflow.action.DeploymentAction" method="processDeploy">
+	 		<interceptor-ref name="popedomStack"></interceptor-ref>
+	 		<interceptor-ref name="token"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/workflow/processDeploy.jsp</result>
+	 		<result name="invalid.token">/WEB-INF/jsp/admin/workflow/processDeploy.jsp</result>
+	 	</action>
+	 	<!-- 分页查询流程部署 -->
+	 	<action name="selectDeployment" class="com.jsoft.oa.admin.workflow.action.DeploymentAction" method="selectDeployment">
+	 		<result>/WEB-INF/jsp/admin/workflow/deployment.jsp</result>
+	 	</action>
+	 	<!-- 删除流程部署 -->
+	 	<action name="deleteDeployment" class="com.jsoft.oa.admin.workflow.action.DeploymentAction" method="deleteDeployment">
+	 		<result type="chain" >selectDeployment</result>
+	 	</action>
+	 	<!-- 显示查看流程图页面 -->
+	 	<action name="showProcessDiagram" class="com.jsoft.oa.admin.workflow.action.ProcessDiagramAction">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/workflow/processDiagram.jsp</result>
+	 	</action>
+	 	<!-- 查看流程图 -->
+	 	<action name="processDiagram" class="com.jsoft.oa.admin.workflow.action.ProcessDiagramAction" method="processDiagram">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 	</action>
+	 	<!-- 查询历史任务-->
+	 	<action name="selectHistoryTask" class="com.jsoft.oa.admin.workflow.action.HistoryAction">
+	 		<interceptor-ref name="loginStack"></interceptor-ref>
+	 		<result>/WEB-INF/jsp/admin/workflow/historyTask.jsp</result>
+	 	</action>
+	 	
+	 	<!-- ######################### 流程部署管理end ##################### -->
+	 	
+	</package>
+	
+
+</struts>

@@ -1,0 +1,13 @@
+package com.jsoft.oa.admin.addressbook.dao;
+
+import com.jsoft.oa.core.dao.HibernateDao;
+
+/**
+ * 联系组的访问接口
+ * @author Administrator
+ * @date 2016年8月16日 下午7:33:01 
+ * @version V1.0
+ */
+public interface ContactGroupDao extends HibernateDao{
+	
+}

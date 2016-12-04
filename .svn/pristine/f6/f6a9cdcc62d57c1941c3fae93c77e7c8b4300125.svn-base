@@ -1,0 +1,99 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>办公管理系统</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="pragma" content="no-cache"/>
+	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/>
+	<meta name="Keywords" content="keyword1,keyword2,keyword3"/>
+	<meta name="Description" content="网页信息的描述" />
+	<meta name="Author" content="gdcct.gov.cn" />
+	<meta name="Copyright" content="All Rights Reserved." />
+	<link href="pujin.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="${path}/css/common/global.css"/>
+    <link rel="StyleSheet" type="text/css" href="${path }/js/dtree/dtree.css" />
+	<script type="text/javascript" src="${path }/js/dtree/dtree.js"></script>
+	<script type="text/javascript" src="${path }/js/jquery/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="${path }/js/jquery/jquery-migrate-1.2.1.min.js"></script>
+	<style type="text/css">
+		html,body{ height:100%;}
+		a{color:#6a6f71; text-decoration:none;}
+	</style>	
+	
+	
+	<script type="text/javascript">
+	//这里的this代表当前文档
+	$(this).ready(function(){
+		//隐藏和显示菜单栏
+		$("#ShowNav").toggle(
+				function(){
+					//第一次点击隐藏#shumenu
+					$("#shumenu").hide();
+					//将父页面的frameset高度减小
+					$("#fstMain",parent.document).attr("cols","14,*");
+					//修改图片和鼠标悬停提示
+					$(this).attr("src","${path}/images/system/left_xs.gif");
+					$("#nav_title").attr("title","显示菜单栏");
+				},
+				function(){
+					//再次点击显示#headtitle
+					$("#shumenu").show();
+					//将父页面的frameset高度还原
+					$("#fstMain",parent.document).attr("cols","148,*");
+					//修改图片和鼠标悬停提示
+					$(this).attr("src","${path}/images/system/left_yc.gif");
+					$("#nav_title").attr("title","隐藏菜单栏");
+				}
+		);
+	});
+	</script>
+	
+  </head>
+ <body class="leftmenubody">
+ 	<div class="topdivyc">
+    	<a href="javascript:void(0);" class="a_link" title="隐藏菜单栏" id="nav_title"><img src="${path}/images/system/left_yc.gif" id= "ShowNav"/><!--隐藏时反显示的图片<img src="images/left_xs.gif" />--></a>
+    </div>
+    <div class="bodytextmenu" id="shumenu">
+	    <div class="shumenu" >
+	    	<!-- 使用dtree插件显示树状菜单 -->
+	    	<script type="text/javascript">
+	    		
+	    		//创建树对象
+	    		var tree = new dTree("tree","${path}/js/dtree/");
+	    		
+	    		
+	    		//添加根节点
+	    		tree.add(1, -1, "办公管理系统");
+	    		//添加二级节点
+	    		tree.add(2,1,"系统管理");
+	    		//添加三级节点
+	    		/*
+	    		//tree.add(id, pid, name, url, title, target, icon, iconOpen, open); //参数列表
+	    		//alert(this.parent.mainframe); //返回父窗口中的name为mainframe的窗口
+	    		*/
+	    		tree.add(21,2,"用户管理","javascript:parent.mainframe.addTab('用户管理','admin/identity/selectUser.jspx')","用户管理");
+	    		tree.add(22,2,"角色管理","javascript:parent.mainframe.addTab('角色管理','${path}/error.jsp')","角色管理");
+	    		tree.add(23,2,"操作管理","javascript:parent.mainframe.addTab('操作管理','http://www.bbb.com')","操作管理");
+	    		tree.add(24,2,"短信验证码","javascript:parent.mainframe.addTab('短信验证码','admin/smsVerify.jspx')","短信验证码");
+	    		
+	    		tree.add(3,1,"假期管理");
+	    		tree.add(31,3,"假期类型");
+	    		tree.add(32,3,"假期明细");
+	    		tree.add(33,3,"用户请假");
+	    		tree.add(34,3,"假期审批");
+	    		
+	    		tree.add(4,1,"流程管理");
+	    		tree.add(5,4,"流程部署");
+	    		tree.add(6,4,"部署管理");
+	    		//将树对象写入到文档
+	    		document.write(tree);
+	    		//默认展开所有节点
+	    		tree.openAll();
+	    		
+	    	</script>
+	    </div>
+    </div>
+  </body>
+</html>
